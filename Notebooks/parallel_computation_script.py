@@ -68,7 +68,7 @@ def generate_dv(s8, om, nzs, h = 0.67, ob = 0.0493, ns = 0.9649, mv = 0.02, n_bi
 if __name__ == "__main__":
     num_cpus = mp.cpu_count()
     print(f"number of cpus is {num_cpus}")
-  
+    '''  
     with mp.Pool(num_cpus) as pool:
         params = [(s8_range[i], om_range[i], nzs) for i in range(n_dv)]
         results = pool.starmap(generate_dv, params)
@@ -79,3 +79,33 @@ if __name__ == "__main__":
             "final_DV": result for cl_DV in results
             }
     print(np.shape(cl_DV))
+
+    '''
+    import timeit
+    st = timeit.default_timer()
+
+    generate_dv(0.8,0.3,nzs)
+
+    end = timeit.default_timer()
+
+    print ('')
+    print (end-st)
+
+
+
+from mpi4py import MPI 
+def function_run_treecorr(i,other_pars = ...):
+    #e.g., run the i-th rho stat. here you have to load the right catalog and run treecorr.
+
+run_count = 0
+number_or_runs = 6 #e.g. 6 like the rho stats you need to compute.
+while run_count<number_or_runs:
+                comm = MPI.COMM_WORLD
+                if run_count+comm.rank<number_or_runs:
+        
+                    function_run_treecorr(run_count+comm.rank,other_pars = other_pars)
+                run_count+=comm.size
+                comm.bcast(run_count,root = 0)
+                comm.Barrier() 
+10:13
+
