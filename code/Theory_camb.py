@@ -7,7 +7,7 @@ from camb import model, initialpower
 import frogress
 
 class cosmo(object):
-    def __init__(self,H0=67.5, ombh2=0.022, omch2=0.122, mnu=0.06, omk=0, tau=0.0, As=2e-9, ns=0.965, r=0, num_massive_neutrinos=0):
+    def __init__(self,H0=67.5, ombh2=0.022, omch2=0.122, mnu=0.06, omk=0, tau=0.0, As=2e-9, ns=0.965, r=0, num_massive_neutrinos=0, w = -1):
         self.H0    = H0
         self.h     = H0/100.
         self.ombh2 = ombh2
@@ -20,6 +20,7 @@ class cosmo(object):
         self.As    = As
         self.ns    = ns
         self.r     = r
+        self.w     = w
         self.num_massive_neutrinos =num_massive_neutrinos
 
 class theory(object):
@@ -42,6 +43,7 @@ class theory(object):
                 AccuracyBoost=2; max_eta_k=50000; lens_potential_accuracy=4; kmax=500
             self.pars = camb.CAMBparams()
             self.pars.set_cosmology(H0=cosmo.H0, ombh2=cosmo.ombh2, omch2=cosmo.omch2, mnu=cosmo.mnu, omk=cosmo.omk, tau=cosmo.tau, num_massive_neutrinos=cosmo.num_massive_neutrinos)
+            self.pars.set_dark_energy(w=cosmo.w)
             self.pars.InitPower.set_params(As=cosmo.As, ns=cosmo.ns, r=cosmo.r)
             self.pars.set_for_lmax(lmax=self.lmax,lens_potential_accuracy=lens_potential_accuracy, max_eta_k=max_eta_k)
             self.pars.set_accuracy(AccuracyBoost=AccuracyBoost,lSampleBoost=1, lAccuracyBoost=1)
