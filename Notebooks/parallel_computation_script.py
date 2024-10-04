@@ -81,7 +81,7 @@ if __name__ == "__main__":
     om_array =  np.random.uniform(0.1,0.4,number_or_runs)
     w_array = np.ones(number_or_runs)*-1.
 
-   # '''
+    '''
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
     rank = comm.Get_rank()
@@ -91,12 +91,15 @@ if __name__ == "__main__":
 
     while run_count < number_or_runs:
         if not os.path.exists(output_folder+'lcdm_{0}.npy'.format(run_count)):
-            cl_DV,s,o,w = run(run_count,s8_array,om_array,w_array,nzs)
-            np.save(output_folder+'lcdm_{0}'.format(run_count),{'output':[cl_DV,s,o,w]})
+            try:
+                cl_DV,s,o,w = run(run_count,s8_array,om_array,w_array,nzs)
+                np.save(output_folder+'lcdm_{0}'.format(run_count),{'output':[cl_DV,s,o,w]})
+            except:
+                pass
         run_count += size
 
     comm.Barrier()   
-   # '''     
+    '''     
         
     # wcdm runs ------
     number_or_runs = 10000
@@ -113,8 +116,11 @@ if __name__ == "__main__":
 
     while run_count < number_or_runs:
         if not os.path.exists(output_folder+'wcdm_{0}.npy'.format(run_count)):
-            cl_DV,s,o,w = run(run_count,s8_array,om_array,w_array,nzs)
-            np.save(output_folder+'wcdm_{0}'.format(run_count),{'output':[cl_DV,s,o,w]})
+            try:
+                cl_DV,s,o,w = run(run_count,s8_array,om_array,w_array,nzs)
+                np.save(output_folder+'wcdm_{0}'.format(run_count),{'output':[cl_DV,s,o,w]})
+            except:
+                pass
         run_count += size
 
     comm.Barrier()   
